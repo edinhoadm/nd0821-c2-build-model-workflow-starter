@@ -5,6 +5,7 @@ Download from W&B the raw dataset and apply some basic data cleaning, exporting 
 import argparse
 import logging
 import wandb
+import numpy as np
 import pandas as pd
 
 
@@ -38,6 +39,8 @@ def go(args):
     # Convert last_review to datetime
     df['last_review'] = pd.to_datetime(df['last_review'])
 
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy()
     df.to_csv("clean_sample.csv", index=False)
 
     logger.info("Creating output artifact")
